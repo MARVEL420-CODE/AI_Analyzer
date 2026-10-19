@@ -145,3 +145,18 @@ app.listen(PORT, () => {
   console.log(`ASCIA API listening on http://localhost:${PORT}`);
   console.log(`Gemini model: ${MODEL}`);
 });
+
+if (process.env.NODE_ENV === "production") {
+  const distPath = path.resolve(process.cwd(), "dist");
+
+  app.use(express.static(distPath));
+
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
+}
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`ASCIA server listening on port ${PORT}`);
+  console.log(`Gemini model: ${MODEL}`);
+});
